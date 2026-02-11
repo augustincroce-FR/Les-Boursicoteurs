@@ -1218,19 +1218,13 @@
                                 <div class="story-badge" style="--badge-color: ${badgeColor}">
                                     <div class="story-badge-inner">
                                         <div class="company-logo">
-                                ${company.logoFile ? 
-                                    '<img src="logos/' + company.logoFile + '" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'block\'"><span style="display:none">' + (company.logoEmoji || company.logo) + '</span>' : 
-                                    (company.logoEmoji || company.logo)
-                                }
+                                ${company.logoFile ? '<img src="logos/' + company.logoFile + '" alt="' + company.name + '">' : (company.logoEmoji || company.logo)}
                             </div>
                                     </div>
                                 </div>
                             ` : `
                                 <div class="company-logo">
-                                ${company.logoFile ? 
-                                    '<img src="logos/' + company.logoFile + '" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'block\'"><span style="display:none">' + (company.logoEmoji || company.logo) + '</span>' : 
-                                    (company.logoEmoji || company.logo)
-                                }
+                                ${company.logoFile ? '<img src="logos/' + company.logoFile + '" alt="' + company.name + '">' : (company.logoEmoji || company.logo)}
                             </div>
                             `}
                         </div>
@@ -1260,10 +1254,7 @@
             
             headerContent.innerHTML = `
                 <div class="company-header-logo">
-                ${currentCompany.logoFile ? 
-                    '<img src="logos/' + currentCompany.logoFile + '" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'block\'"><span style="display:none">' + (currentCompany.logoEmoji || currentCompany.logo) + '</span>' : 
-                    (currentCompany.logoEmoji || currentCompany.logo)
-                }
+                ${currentCompany.logoFile ? '<img src="logos/' + currentCompany.logoFile + '" alt="' + currentCompany.name + '">' : (currentCompany.logoEmoji || currentCompany.logo)}
                 </div>
                 <div class="company-header-info">
                     <div class="info-item">

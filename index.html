@@ -1204,29 +1204,26 @@
             }
 
             grid.innerHTML = filtered.map(company => {
-                const hasRecentNews = false; // Badge temporairement désactivé
-                const badgeColor = company.variation1y >= 0 ? '#10B981' : '#EF4444';
+                const hasRecentNews = false;
                 const variationClass = company.variation1y >= 0 ? 'positive' : 'negative';
                 const lastNewsText = company.news.length > 0 ? 
                     `Dernière actu: ${company.news[0].date}` : 
                     'Aucune actualité récente';
+                
+                // Construire le HTML du logo AVANT le template
+                let logoHTML = '';
+                if (company.logoFile) {
+                    logoHTML = '<img src="logos/' + company.logoFile + '" alt="' + company.name + '">';
+                } else {
+                    logoHTML = company.logoEmoji || company.logo;
+                }
 
                 return `
                     <div class="company-card" onclick="navigateTo('company', '${company.id}')">
                         <div class="company-logo-wrapper">
-                            ${hasRecentNews ? `
-                                <div class="story-badge" style="--badge-color: ${badgeColor}">
-                                    <div class="story-badge-inner">
-                                        <div class="company-logo">
-                                ${company.logoFile ? '<img src="logos/' + company.logoFile + '" alt="' + company.name + '">' : (company.logoEmoji || company.logo)}
+                            <div class="company-logo">
+                                ${logoHTML}
                             </div>
-                                    </div>
-                                </div>
-                            ` : `
-                                <div class="company-logo">
-                                ${company.logoFile ? '<img src="logos/' + company.logoFile + '" alt="' + company.name + '">' : (company.logoEmoji || company.logo)}
-                            </div>
-                            `}
                         </div>
                         <div class="company-name">${company.name}</div>
                         <div class="company-sector">${company.sector}</div>
@@ -1252,9 +1249,17 @@
             const headerContent = document.getElementById('companyHeaderContent');
             const variationClass = currentCompany.variation24h >= 0 ? 'positive' : 'negative';
             
+            // Construire le HTML du logo AVANT
+            let headerLogoHTML = '';
+            if (currentCompany.logoFile) {
+                headerLogoHTML = '<img src="logos/' + currentCompany.logoFile + '" alt="' + currentCompany.name + '">';
+            } else {
+                headerLogoHTML = currentCompany.logoEmoji || currentCompany.logo;
+            }
+            
             headerContent.innerHTML = `
                 <div class="company-header-logo">
-                ${currentCompany.logoFile ? '<img src="logos/' + currentCompany.logoFile + '" alt="' + currentCompany.name + '">' : (currentCompany.logoEmoji || currentCompany.logo)}
+                    ${headerLogoHTML}
                 </div>
                 <div class="company-header-info">
                     <div class="info-item">

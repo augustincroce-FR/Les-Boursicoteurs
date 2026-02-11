@@ -21,7 +21,7 @@
             --text-muted: #64748B;
             --color-positive: #10B981;
             --color-negative: #EF4444;
-            --color-neutral: #F59E0B;
+            --color-neutral: #3B82F6;
         }
 
         /* ========================================== */
@@ -415,7 +415,7 @@
 
         .news-card.positive { --card-color: #10B981; }
         .news-card.negative { --card-color: #EF4444; }
-        .news-card.neutral { --card-color: #F59E0B; }
+        .news-card.neutral { --card-color: #3B82F6; }
 
         .news-image {
             height: 120px;
@@ -1343,16 +1343,31 @@
                 const year = parseInt(parts[2]);
                 const monthIdx = monthMap[parts[1]] || 0;
                 
+                // Calcul PRÉCIS du jour de l'année (période = Fév 2024 à Fév 2025)
+                // Jour 0 = 1er Fév 2024, Jour 364 = 31 Jan 2025
                 let dayOfYear;
+                const daysInMonth = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]; // 2024 est bissextile
+                
                 if (year === 2025) {
-                    dayOfYear = 305 + monthIdx * 30 + day;
-                } else {
-                    dayOfYear = (monthIdx - 3) * 30 + day;
+                    // Jan-Fév 2025 = fin de période
+                    if (monthIdx === 0) { // Janvier 2025
+                        dayOfYear = 334 + day; // 11 mois complets + jour
+                    } else if (monthIdx === 1) { // Février 2025
+                        dayOfYear = 365 + day; // Au-delà, mais on va limiter
+                    }
+                } else if (year === 2024) {
+                    // Fév 2024 à Déc 2024
+                    let daysSinceStart = 0;
+                    for (let m = 1; m < monthIdx; m++) { // Depuis Février (idx 1)
+                        daysSinceStart += daysInMonth[m];
+                    }
+                    dayOfYear = daysSinceStart + day - 1; // -1 car on commence à 0
                 }
+                
                 dayOfYear = Math.max(0, Math.min(dayOfYear, totalDays - 1));
                 
                 const color = news.impact === 'positive' ? '#10B981' : 
-                             news.impact === 'negative' ? '#EF4444' : '#F59E0B';
+                             news.impact === 'negative' ? '#EF4444' : '#3B82F6';
                 pointColors[dayOfYear] = color;
                 pointRadii[dayOfYear] = 5;
                 newsPositions[newsIdx] = dayOfYear;
@@ -1492,15 +1507,18 @@
                     const focusLine = document.getElementById('focusLine');
                     if (focusLine) {
                         const color = news.impact === 'positive' ? '#10B981' : 
-                                     news.impact === 'negative' ? '#EF4444' : '#F59E0B';
+                                     news.impact === 'negative' ? '#EF4444' : '#3B82F6';
                         
                         focusLine.style.setProperty('--active-color', color);
                         focusLine.classList.add('active');
                         
-                        const canvas = document.getElementById('companyChart');
-                        const chartWidth = canvas.offsetWidth;
-                        const pointPosition = (pointIdx / companyChart.data.labels.length) * chartWidth;
-                        focusLine.style.left = `${pointPosition}px`;
+                        // Obtenir la position X exacte du point
+                        const xScale = companyChart.scales.x;
+                        const pixelX = xScale.getPixelForValue(pointIdx);
+                        
+                        // Ajouter le padding de .chart-section (16px à gauche)
+                        const chartSectionPadding = 16;
+                        focusLine.style.left = `${pixelX + chartSectionPadding}px`;
                     }
                     
                     // Agrandir le point sélectionné, garder les autres à 5px ou 0

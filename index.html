@@ -376,6 +376,7 @@
 
         .news-carousel {
             display: flex;
+            flex-direction: row-reverse;
             gap: 20px;
             overflow-x: auto;
             scroll-snap-type: x mandatory;
@@ -499,6 +500,7 @@
             font-size: 16px;
             font-weight: 700;
             margin-bottom: 16px;
+            text-align: center;
         }
 
         .block-content {
@@ -1553,7 +1555,7 @@
             const content = document.getElementById('analysisContent');
             content.innerHTML = `
                 <div class="analysis-block">
-                    <div class="block-title">🍰 Qu'est-ce qu'ils vendent ?</div>
+                    <div class="block-title">Qu'est-ce qu'ils vendent ?</div>
                     <div class="revenue-list">
                         <div class="revenue-item">
                             <div class="revenue-emoji">✈️</div>
@@ -1574,14 +1576,14 @@
                 </div>
 
                 <div class="analysis-block">
-                    <div class="block-title">⚔️ Le Marché</div>
+                    <div class="block-title">Le Marché</div>
                     <div class="market-bubbles">
                         ${bubblesHTML}
                     </div>
                 </div>
 
                 <div class="analysis-block">
-                    <div class="block-title">⭐ L'Univers de Marque</div>
+                    <div class="block-title">L'Univers de Marque</div>
                     <div class="brands-grid">
                         <div class="brand-item">✈️</div>
                         <div class="brand-item">🚁</div>
@@ -1591,7 +1593,7 @@
                 </div>
 
                 <div class="analysis-block">
-                    <div class="block-title">📚 L'Avis en Bourse</div>
+                    <div class="block-title">L'Avis en Bourse</div>
                     <div class="advice-list">
                         <div class="advice-item">
                             <div class="advice-emoji">💪</div>
